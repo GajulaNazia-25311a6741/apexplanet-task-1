@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JavaScript Quiz</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e0f2f1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .quiz {
+            background: white;
+            width: 400px;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 0 10px gray;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background-color: #00695c;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #004d40;
+        }
+
+        #next {
+            background-color: #264653;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="quiz">
+
+    <h1>JavaScript Quiz</h1>
+
+    <h2 id="question">Question</h2>
+
+    <div id="answers"></div>
+
+    <p id="result"></p>
+
+    <button id="next" onclick="nextQuestion()">Next</button>
+
+</div>
+
+<script>
+
+    const questions = [
+        {
+            question: "What does HTML stand for?",
+            answers: [
+                "Hyper Text Markup Language",
+                "High Text Machine Language",
+                "Hyperlink Text Management Language",
+                "Home Tool Markup Language"
+            ],
+            correct: 0
+        },
+
+        {
+            question: "Which language is used for styling?",
+            answers: [
+                "HTML",
+                "CSS",
+                "Java",
+                "Python"
+            ],
+            correct: 1
+        },
+
+        {
+            question: "Which language makes webpages interactive?",
+            answers: [
+                "HTML",
+                "CSS",
+                "JavaScript",
+                "SQL"
+            ],
+            correct: 2
+        }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function showQuestion() {
+
+        document.getElementById("result").innerHTML = "";
+
+        let q = questions[currentQuestion];
+
+        document.getElementById("question").innerHTML = q.question;
+
+        let answers = document.getElementById("answers");
+
+        answers.innerHTML = "";
+
+        q.answers.forEach(function(answer, index) {
+
+            let button = document.createElement("button");
+
+            button.innerHTML = answer;
+
+            button.onclick = function() {
+                checkAnswer(index);
+            };
+
+            answers.appendChild(button);
+        });
+    }
+
+    function checkAnswer(index) {
+
+        if (index === questions[currentQuestion].correct) {
+            score++;
+            document.getElementById("result").innerHTML = "✅ Correct!";
+        } else {
+            document.getElementById("result").innerHTML = "❌ Wrong!";
+        }
+    }
+
+    function nextQuestion() {
+
+        currentQuestion++;
+
+        if (currentQuestion < questions.length) {
+            showQuestion();
+        } else {
+
+            document.querySelector(".quiz").innerHTML =
+                "<h1>Quiz Completed 🎉</h1>" +
+                "<h2>Your Score: " + score + "/" + questions.length + "</h2>" +
+                "<button onclick='location.reload()'>Restart Quiz</button>";
+        }
+    }
+
+    showQuestion();
+
+</script>
+
+</body>
+</html>
