@@ -1,156 +1,56 @@
-const products = [
+// Cart
+let cartCount = 0;
 
-    {
-        name: "Laptop",
-        category: "electronics",
-        price: 50000,
-        rating: 4.5,
-        image: "💻"
-    },
+// Add product to cart
+function addToCart() {
 
-    {
-        name: "Headphones",
-        category: "electronics",
-        price: 2000,
-        rating: 4.2,
-        image: "🎧"
-    },
+    cartCount++;
 
-    {
-        name: "T-Shirt",
-        category: "clothing",
-        price: 700,
-        rating: 4.0,
-        image: "👕"
-    },
+    document.getElementById("cartCount").textContent = cartCount;
 
-    {
-        name: "Jeans",
-        category: "clothing",
-        price: 1500,
-        rating: 4.3,
-        image: "👖"
-    },
-
-    {
-        name: "Running Shoes",
-        category: "shoes",
-        price: 2500,
-        rating: 4.8,
-        image: "👟"
-    },
-
-    {
-        name: "Sports Shoes",
-        category: "shoes",
-        price: 1800,
-        rating: 4.1,
-        image: "🥾"
-    }
-
-];
+    alert("Product added to cart!");
+}
 
 
-function displayProducts(list) {
+// Filter products
+function filterProducts(category) {
 
-    let container = document.getElementById("productList");
+    const products = document.querySelectorAll(".product");
 
-    container.innerHTML = "";
+    products.forEach(function(product) {
 
-    list.forEach(function(product) {
+        if (
+            category === "all" ||
+            product.dataset.category === category
+        ) {
+            product.style.display = "block";
+        } else {
+            product.style.display = "none";
+        }
 
-        container.innerHTML += `
-
-            <div class="product">
-
-                <div class="image">
-                    ${product.image}
-                </div>
-
-                <h3>${product.name}</h3>
-
-                <p class="price">
-                    ₹${product.price}
-                </p>
-
-                <p class="rating">
-                    ⭐ ${product.rating}
-                </p>
-
-            </div>
-
-        `;
     });
 }
 
 
-function filterProducts() {
+// Search products
+document.getElementById("search").addEventListener("input", function() {
 
-    let category =
-        document.getElementById("category").value;
+    const searchText = this.value.toLowerCase();
 
-    let sort =
-        document.getElementById("sort").value;
+    const products = document.querySelectorAll(".product");
 
-    let result = [...products];
+    products.forEach(function(product) {
 
+        const productName =
+            product.querySelector("h3").textContent.toLowerCase();
 
-    // Category filtering
+        if (productName.includes(searchText)) {
+            product.style.display = "block";
+        } else {
+            product.style.display = "none";
+        }
 
-    if (category !== "all") {
+    });
 
-        result = result.filter(function(product) {
+});
 
-            return product.category === category;
-
-        });
-
-    }
-
-
-    // Sort by price: low to high
-
-    if (sort === "low") {
-
-        result.sort(function(a, b) {
-
-            return a.price - b.price;
-
-        });
-
-    }
-
-
-    // Sort by price: high to low
-
-    if (sort === "high") {
-
-        result.sort(function(a, b) {
-
-            return b.price - a.price;
-
-        });
-
-    }
-
-
-    // Sort by rating
-
-    if (sort === "rating") {
-
-        result.sort(function(a, b) {
-
-            return b.rating - a.rating;
-
-        });
-
-    }
-
-
-    displayProducts(result);
-}
-
-
-// Show products when page opens
-
-displayProducts(products);
